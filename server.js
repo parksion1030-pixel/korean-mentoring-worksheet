@@ -12,8 +12,7 @@ app.use(express.json({ limit: '100kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT || 3000;
-const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
-
+const MODEL = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
 function cleanCategories(obj, words) {
   const out = {};
   for (const word of words) {
