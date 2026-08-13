@@ -31,6 +31,7 @@ app.post('/api/classify', async (req, res) => {
 
     if (!words.length) return res.status(400).json({error:'단어가 없습니다.'});
     if (words.length > 300) return res.status(400).json({error:'한 번에 최대 300개까지 분류할 수 있어요.'});
+   console.log('[AI] classify 요청 들어옴');
     if (!process.env.GEMINI_API_KEY) {
       return res.status(500).json({error:'서버에 GEMINI_API_KEY가 설정되지 않았어요.'});
     }
