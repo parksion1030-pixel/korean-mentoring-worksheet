@@ -124,6 +124,59 @@ ${words.map((w,i)=>`${i+1}. ${w}`).join('\n')}
   }
 });
 
+app.post('/api/translate', async (req, res) => {
+  try {
+    const word = String(req.body.word || '').trim();
+
+    if (!word) {
+      return res.status(400).json({ error: '번역할 문장이 없습니다.' });
+    }
+
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(500).json({ error: '서버에 GEMINI_API_KEY가 설정되지 않았어요.' });
+    }
+
+    const ai = new GoogleGenAI({
+      apiKey: process.env.GEMINI_API_KEY
+    });
+
+    const prompt = `
+너는 한국어를 베트남어로 번역하는 전문 번역가다.
+
+다음 한국어 문장 또는 표현을 베트남 사람이 실제로 자연스럽게 사용하는 베트남어로 번역해라.
+
+중요한 규칙:
+1. 단어를 기계적으로 직역하지 말고 문맥과 감정을 살려라.
+2. 원문의 의미를 임의로 추가하거나 삭제하지 마라.
+3. 노래 가사나 감정적인 표현도 자연스럽게 번역하라.
+4. 번역 결과만 출력하고 설명은 하지 마라.
+5. 반드시 베트남어로만 출력하라.
+
+한국어:
+${word}
+`;
+
+    console.log(`[AI] 번역 요청: ${word}`);
+
+    const response = await ai.models.generateContent({
+      model: MODEL,
+      contents: prompt
+    });
+
+    const translation = String(response.text || '').trim();
+
+    if (!translation) {
+      return res.status(502).json({ error: 'Gemini가 번역 결과를 반환하지 않았어요.' });
+    }
+
+    console.log(`[AI] 번역 결과: ${translation}`);
+
+    res.json({ translation });
+  } catch (err) {
+    console.error('[AI] 번역 오류:', err);
+    res.status(500).json({ error: 'AI 번역 중 오류가 발생했어요.' });
+  }
+});
 app.use((req,res,next)=>{
   if (req.method === 'GET') {
     res.sendFile(path.join(__dirname,'public','index.html'));
