@@ -55,16 +55,12 @@ ${words.map((w,i)=>`${i+1}. ${w}`).join('\n')}
 `;
 
     const response = await ai.models.generateContent({
-      model: MODEL,
-      contents: prompt,
-      config: {
-        responseMimeType: 'application/json',
-        responseSchema: {
-          type: 'object',
-          additionalProperties: { type: 'string' }
-        }
-      }
-    });
+  model: MODEL,
+  contents: prompt,
+  config: {
+    responseMimeType: 'application/json'
+  }
+});
 
     let parsed;
     try {
