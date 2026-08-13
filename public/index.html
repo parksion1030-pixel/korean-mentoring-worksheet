@@ -452,11 +452,20 @@ async function fillMissingTranslations(){
   status.textContent=`베트남어 자동번역 중… (${missing.length}개)`;
   for(const {it,i} of missing){
     try{
-      const q=encodeURIComponent(it.word);
-      const res=await fetch(`https://api.mymemory.translated.net/get?q=${q}&langpair=ko|vi`);
-      if(!res.ok) continue;
-      const data=await res.json();
-      const tr=(data && data.responseData && data.responseData.translatedText || '').trim();
+     const res = await fetch('/api/translate', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    word: it.word
+  })
+});
+
+if (!res.ok) continue;
+
+const data = await res.json();
+const tr = String(data.translation || '').trim();
       if(tr && !/MYMEMORY WARNING|PLEASE/i.test(tr)){
         it.meaning=tr;
         const el=document.getElementById(`meaning-${i}`);
