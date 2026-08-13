@@ -80,8 +80,10 @@ ${words.map((w,i)=>`${i+1}. ${w}`).join('\n')}
   }
 });
 
-app.get('*', (req,res)=>{
-  res.sendFile(path.join(__dirname,'public','index.html'));
+app.use((req,res,next)=>{
+  if (req.method === 'GET') {
+    res.sendFile(path.join(__dirname,'public','index.html'));
+  } else {
+    next();
+  }
 });
-
-app.listen(PORT, ()=>console.log(`한국어 멘토링 학습지: http://localhost:${PORT}`));
