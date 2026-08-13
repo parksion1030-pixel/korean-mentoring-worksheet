@@ -555,8 +555,7 @@ function generateWordPreview(){
           <div class="packed-rows">`;
 
         for(const row of rows){
-          const one=row.items.length===1;
-          out += `<div class="packed-row ${one?'one':'two'}">
+         out += `<div class="packed-row two">`
             ${row.items.map(card).join('')}
           </div>`;
         }
