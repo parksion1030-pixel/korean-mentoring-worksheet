@@ -555,9 +555,7 @@ function generateWordPreview(){
           <div class="packed-rows">`;
 
         for(const row of rows){
-         out += `<div class="packed-row two">`
-            ${row.items.map(card).join('')}
-          </div>`;
+        out += `<div class="packed-row two">${row.items.map(card).join('')}</div>`;
         }
 
         out += `</div></section>`;
