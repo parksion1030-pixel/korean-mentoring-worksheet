@@ -41,13 +41,7 @@ function cleanCategories(obj, words) {
 
   return out;
 }
-  const out = {};
-  for (const word of words) {
-    const value = obj?.[word];
-    out[word] = typeof value === 'string' && value.trim() ? value.trim() : '기타';
-  }
-  return out;
-}
+  
 
 app.post('/api/classify', async (req, res) => {
   try {
