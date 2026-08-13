@@ -87,3 +87,6 @@ app.use((req,res,next)=>{
     next();
   }
 });
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`한국어 멘토링 학습지 서버 실행: ${PORT}`);
+});
