@@ -55,6 +55,7 @@ app.post('/api/classify', async (req, res) => {
 ${words.map((w,i)=>`${i+1}. ${w}`).join('\n')}
 `;
 
+   console.log('[AI] Gemini 호출 시작');
     const response = await ai.models.generateContent({
   model: MODEL,
   contents: prompt,
